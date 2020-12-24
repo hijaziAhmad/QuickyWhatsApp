@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Quicky WhatsApp</title>
+
+</head>
+<body>
+	<div class="error-popup" id="errorPopup">
+		Please Enter Correct Phone Number
+	  </div>
+	  <div class="main-container">
+		<div class="title">
+		Key-in Number:
+		</div>
+		<div class="phone-number-container">
+		  <select name="country-code" id="countryCode" onchange="formatNumber()">
+			<option value="60" selected>+60</option>
+			<option value="65" >+65</option>
+		  </select>
+		  <input type="text" id="phoneNumber" onblur="formatNumber()" maxlength="12">
+		  <button onclick="pasteThis()">paste</button>
+		  <textarea id="wasapMsg" class="wasap-msg">Hello, I'm Fatin from DoctorOnCall.
+		  </textarea>
+		</div>
+	  
+	  
+	  
+	  
+	  
+	  
+	  message will be send to <p id="sendToNumber"></p>
+	  <button onclick=sendWhatsApp() style="display:block;font-size: 24px;">quicky</button>
+	  </div>
+	  
+</body>
+<script>
+	var sendTo;
+function id(input){
+  return document.getElementById(`${input}`)
+}
+function el(input,number){
+  return document.getElementsByClassName(`${input}`)[`${number}`]
+}
+function removeHyphenAndSpaces(input){
+  // console.log("original",input)
+  var reformated = input.replace(/-|\s|[a-z]|[A-Z]/g,"");
+  // console.log("changed",reformated)
+  return reformated;
+}
+function formatNumber(){
+  el("error-popup",0).style.display="none"
+var temp_numb= id("phoneNumber").value
+console.log(temp_numb)
+var numb = removeHyphenAndSpaces(temp_numb)
+// var numb = removeHyphenAndSpaces(temp_numb)
+// var numb =temp_numb
+// console.log(numb[0])
+  if (numb[0]=="6"){
+    sendTo=numb;
+  }else if(numb[0]=="0"){
+    numb=numb.substring(1);
+    sendTo =`${id("countryCode").value}${numb}`
+  }else{
+    sendTo =`${id("countryCode").value}${numb}`;
+  }
+  id("sendToNumber").innerHTML=sendTo
+}
+var encodedText
+function encodeText(){
+  encodedText = encodeURI(id("wasapMsg").value);
+  
+}
+function sendWhatsApp(){
+  encodeText();
+  if(sendTo.length<10 && sendTo.length>12 || sendTo[2]!=1){
+    el("error-popup",0).style.display="block"
+  }else{
+    window.open(`https://wa.me/${sendTo}?text=${encodedText}`, '_blank');
+  }
+}
+
+async function pasteThis() {
+  const text = await navigator.clipboard.readText();
+  console.log(text)
+  id("phoneNumber").value = text;
+  formatNumber();
+}	
+</script>
+
+<style>
+body{margin: 0;
+    padding: 0;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;}
+
+.main-container{
+      justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+  margin-top:40px;
+  font-size: 40px;
+}
+.phone-number-container{
+  margin:20px;
+  font-size: 40px;
+}
+.error-popup{
+  display:none;
+  width:100vw;
+  background-color:red;
+  padding:20px;
+  text-align:center;
+  margin:0;
+}
+
+.wasap-msg{
+  display:block;
+  width:260px;
+  margin-top:20px;
+}
+</style>
+</html>
