@@ -77,7 +77,7 @@ function sendWhatsApp(){
   if(sendTo.length<10 && sendTo.length>12 || sendTo[2]!=1){
     el("error-popup",0).style.display="block"
   }else{
-    window.open(`https://wa.me/${sendTo}?text=${encodedText}`, '_blank');
+    window.location.href=`https://wa.me/${sendTo}?text=${encodedText}`;
   }
 }
 
